@@ -1,1 +1,2 @@
 # BaseWrapperAdapter
+一个可以给Recyclerview 添加头和尾的Adapter
