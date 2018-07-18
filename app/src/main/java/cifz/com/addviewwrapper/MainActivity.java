@@ -2,6 +2,7 @@ package cifz.com.addviewwrapper;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Gravity;
@@ -20,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         recyclerView = (RecyclerView) findViewById(R.id.rv_test);
 
-        LinearLayoutManager manager = new LinearLayoutManager(this);
+        GridLayoutManager manager = new GridLayoutManager(this,2);
         recyclerView.setLayoutManager(manager);
         recyclerView.setHasFixedSize(true);
         AdapterTest adapterTest = new AdapterTest();
@@ -29,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
         tv.setText("嘿嘿嘿");
         tv.setGravity(Gravity.CENTER);
         BaseWrapper baseAdapter = new BaseWrapper(adapterTest);
-        baseAdapter.addFooterView(tv);
+        baseAdapter.addHeaderView(tv);
         recyclerView.setAdapter(baseAdapter);
 
     }

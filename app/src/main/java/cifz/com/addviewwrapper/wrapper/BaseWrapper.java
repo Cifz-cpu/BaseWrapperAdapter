@@ -1,6 +1,7 @@
 package cifz.com.addviewwrapper.wrapper;
 
 import android.support.v4.util.SparseArrayCompat;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
@@ -90,6 +91,39 @@ public class BaseWrapper extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
         public SimpleViewHolder(View itemView) {
             super(itemView);
+        }
+    }
+
+    @Override
+    public void onAttachedToRecyclerView(RecyclerView recyclerView)
+    {
+        innerAdapter.onAttachedToRecyclerView(recyclerView);
+
+        final RecyclerView.LayoutManager layoutManager = recyclerView.getLayoutManager();
+        if (layoutManager instanceof GridLayoutManager)
+        {
+            final GridLayoutManager gridLayoutManager = (GridLayoutManager) layoutManager;
+            final GridLayoutManager.SpanSizeLookup spanSizeLookup = gridLayoutManager.getSpanSizeLookup();
+
+            gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup()
+            {
+                @Override
+                public int getSpanSize(int position)
+                {
+                    int viewType = getItemViewType(position);
+                    if (mHeaderViews.get(viewType) != null)
+                    {
+                        return ((GridLayoutManager) layoutManager).getSpanCount();
+                    } else if (mFooterViews.get(viewType) != null)
+                    {
+                        return ((GridLayoutManager) layoutManager).getSpanCount();
+                    }
+                    if (spanSizeLookup != null)
+                        return spanSizeLookup.getSpanSize(position);
+                    return 1;
+                }
+            });
+            gridLayoutManager.setSpanCount(gridLayoutManager.getSpanCount());
         }
     }
 
